@@ -49,11 +49,11 @@
 
 #table-of-contents(depth:2)
 
-// Enable headers and footers from this point on
-#set-header-footer(true)
-
 
 = Introduction
+
+// Enable headers and footers from this point on
+#set-header-footer(true)
 
 This bachelor thesis is the result from a request from the enterprise SP-Timing. SP-Timing currently offers multiple solutions for the timing of multiple types of race (ski, trail, run, triathlon...). 
 This project aim to research and develop a prototype for acquiring video from the finish line of a race, and determine automatically the finish time with a precision of a tenth of a second. The system need to be as cheap as possible, easy to install and reliable.
@@ -61,9 +61,6 @@ This project aim to research and develop a prototype for acquiring video from th
 Currently, SP-Timing mainly uses a chip based solution, that consists of a chip and an (or multiples) antenna. The antenna is located at the finish line, and it detects the chip located on the bibs. The newly created system would be here to complete the currently used one, or as a standalone solution. This means that the system cannot rely on the existing solution to work.
 
 The system would be placed in a way that ensures a good visibility of the finish line, but not too far from it in order to have enough details to ensure precision.
-
-#todo[Maybe add something here to explain more clearly the basic setup of a race]
-
 
 
 == Objectives
@@ -932,10 +929,7 @@ To upgrade this part, some better labeled data would be needed. One could either
 
 The biggest improvement this part would benifit from would be to fix all the bib number to a precise length, for example 4 digits. As wrong read are very rare, partial ones pretty common, this would ensure the system detects every partial read, and let a human reviewer intervene and write manually the bib number.
 
-A new bib reconstruction system could even be created, as by fixing the lenght of the bib numbers, some more complex reconstruction is possible (without increasing the number of false positives).
-
-#todo[Maybe give an example of reconstruction]
-
+A new bib reconstruction system could even be created, as by fixing the length of the bib numbers, some more complex reconstruction is possible (without increasing the number of false positives). Something based on the Bayesian inference #footnote(link("https://en.wikipedia.org/wiki/Bayesian_inference"))
 
 == Timing precision
 
