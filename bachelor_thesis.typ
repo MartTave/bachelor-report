@@ -4,7 +4,7 @@
 
 #show: project.with( 
   title: "VRRT
-Video-based Realtime Race Timing", 
+Video-based Real-time Race Timing", 
   sub-title: "A Bachelor Thesis in Data Engineering", // Optional
 
   is-thesis: true,   
@@ -27,7 +27,7 @@ Video-based Realtime Race Timing",
 
   authors: "Tavernier Martin", 
 
-  date: datetime(year: 2025, month: 7, day: 25), // or datetime.today() 
+  date: datetime(year: 2025, month: 7, day: 24), // or datetime.today() 
   language: doc_language, // en or fr
   version: "1.0", // or for instance "1.0", for the version of your thesis],  
   code-theme: "bluloco-light",
@@ -59,7 +59,7 @@ Video-based Realtime Race Timing",
 This bachelor thesis is the result from a request from the enterprise SP-Timing. SP-Timing currently offers multiple solutions for the timing of multiple types of race (ski, trail, run, triathlon...). 
 This project aim to research and develop a prototype for acquiring video from the finish line of a race, and determine automatically the finish time with a precision of a tenth of a second. The system need to be as cheap as possible, easy to install and reliable.
 
-Currently, SP-Timing mainly uses a chip based solution, that consists of a chip and an (or multiples) antenna. The antenna is located at the finish line, and it detects the chip located on the bibs. The newly created system would be here to complete the currently used one, or as a standalone solution. This means that the system cannot rely on the existing solution to work.
+Currently, SP-Timing mainly uses a chip based solution, that consists of a chip and an (or multiples) antenna. The antenna is located at the finish line, and it detects the chip located on the bibs. The newly created system would be here to complement the current one one, or as a standalone solution. This means that the system cannot rely on the existing solution to work.
 
 The system would be placed in a way that ensures a good visibility of the finish line, but not too far from it in order to have enough details to ensure precision.
 
@@ -158,7 +158,7 @@ The solutions that were considered were :
 - Efficient DETR #cite(<lv2023detrs>)
 - RT-DETR #cite(<lv2024rtdetrv2improvedbaselinebagoffreebies>)
 
-The final choice was made to use the Ultralytics YOLO #cite(<yolo11_ultralytics>) implementation for multiples reasons. First, the inference implementation is very easy, only a few lines of code are needed. There is many models available (YOLOv5 to YOLOv11) with multiples model sizes (nano, small, base, large, extra-large) for varying tradeoffs between performance and accuracy. Lastly, the inference performance of the #acr("YOLO") models are the best available for now, so it fits perfectly for our task. For the choice of the resolution at which to operate the model, as it is pre-trained with a 640x640 resolution, it is the one used for this project. Another one could be use, either to stretch out performances even more, but as this part of the solution is not the heaviest, the benefits vs costs of training this model to another resolution is out of scope for this Bachelor thesis.
+The final choice was made to use the Ultralytics #acr("YOLO") implementation for multiples reasons. First, the inference implementation is very easy, only a few lines of code are needed. There is many models available (YOLOv5 to YOLOv11) with multiples model sizes (nano, small, base, large, extra-large) for varying tradeoffs between performance and accuracy. Lastly, the inference performance of the #acr("YOLO") models are the best available for now, so it fits perfectly for our task. For the choice of the resolution at which to operate the model, as it is pre-trained with a 640x640 resolution, it is the one used for this project. Another one could be used, either to stretch out performances even more, but as this part of the solution is not the heaviest performance wise, the benefits vs costs of training this model to another resolution puts this out of scope for this Bachelor thesis.
 
 == Tracking
 
@@ -216,6 +216,8 @@ The second and third one are very similar, their quality are not that good, but 
 
 But even the quality of the third dataset is not perfect, as when there is occlusion, it is not labelled as a detection. 
 
+A training has been done on both datasets, with the first one being slighly better. This is the one the system currently uses.
+
 === Training
 
 With the technology stack made available by the Ultralytics YOLO implementation  #footnote[https://docs.ultralytics.com/modes/train/]. The training was done quickly and easily. This model was trained using pictures resized to 640x640. This choice was made to facilitate the merge of the two models for a later use, as described in @future_work
@@ -225,7 +227,9 @@ With the technology stack made available by the Ultralytics YOLO implementation 
   caption: [YOLO fine-tuning statistics]
 ) <fig_yolo_train>
 
-As shown by the @fig_yolo_train, the training was completed without any issue, but we can observe that were are probably going to overfit if we continue the training any longer, as the validation curves are stagnating. This likely mean we have exhausted the value of the training data.
+As shown by the @fig_yolo_train, the training was completed without any issue, but we can observe that were are probably going to overfit if we continue the training any longer, as the validation curves are stagnating. This likely mean we have exhausted the value of the training data, which is not a suprise, as the data is not that great quality wise.
+
+#pagebreak()
 
 === Results
 
@@ -281,7 +285,7 @@ Those are the results on a small datasets created form the videos taken at the "
 caption: [Bib detection benchmark result]
 ) <bib_detection_benchmark>
 
-As shown in the @bib_detection_benchmark, the results seems very good, but the dataset was put together by hand, and the situations were selected to be easy (no motion blur, no partially visible bib) so the results need to be taken while keeping that in mind. The number of false positive is pretty high, but this is not a problem, as the target was to have the highest recall possible. The false positive can be filtered out, by first allowing only a bib detection inside of a person detection box. This would effectively eliminate all detection outside of a person box. And then we can allow only a single detection per person box, to avoid reading numbers present on contestant t-shirt. As a last line of defense, we can put some filters on the result of the reading, but we will see those in the @bib_reading
+As shown in the @bib_detection_benchmark, the results seems very good, but the dataset was put together by hand, and the situations were selected to be easy (no motion blur, no partially visible bib) so the results needs to be taken while keeping that in mind. The number of false positive is pretty high, but this is not a problem, as the target was to have the highest recall possible. The false positive can be filtered out, by first allowing only a bib detection inside of a person detection box. This would effectively eliminate all detection outside of a person box. And then we can allow only a single detection per person box, to avoid reading numbers present on contestant t-shirt. As a last line of defense, we can put some filters on the result of the reading, but we will see those in the @bib_reading
 
 == Depth estimation
 
@@ -304,7 +308,7 @@ The number of tests in real situations were limited (two races were timed by SPT
 
 Stereo depth estimation was considered during half of the project, as  the results from monocular depth estimation could not be asserted to match the precision needed for the timing solution until some data have been gathered. In theory, stereo depth estimation was a good solution, as it should have superior precision and be less subjective to the scene situation (as the race take places mostly outdoor, picture texture would not be a problem). With multiples matching algorithm available, ranging from the simple Block Matching #footnote(link("https://en.wikipedia.org/wiki/Block-matching_algorithm")) to some deep learning alternative like FoundationStereo #cite(<wen2025stereo>), there would be multiple choices, with some compromise between precision and performance.
 
-In order to harvest stereo video, some preparation was needed. Namely create a stereo bar to hold both cameras in place, create the tools to calibrate the setup and create the solution to record some synchronized video with both cameras at the same time. Doing this without any specialized hardware is very complicated (if not impossible). In my tests, achieving sub millisecond precision is possible, but only at half the designed operating frame-rate of the cameras. So for the race, the choice has been made to record the videos in parallel with a timestamp for each frame, and to synchronize them afterward (allowing for a maximum error of #acr("FPS")/2. In our case 15ms). This allowed to record monocular and stereo video both at the same time, as the timestamps recorded could allow us to test the precision of the timing system after the race.
+In order to harvest stereo video, some preparation was needed. Namely create a stereo bar to hold both cameras in place, create the tools to calibrate the setup and create the solution to record some synchronized video with both cameras at the same time. Doing this without any specialized hardware is very complicated (if not impossible). In my tests, achieving sub millisecond precision is possible, but only at half the designed operating frame-rate of the cameras. So for the race, the choice has been made to record the videos in parallel with a timestamp for each frame, and to synchronize them afterward (allowing for a maximum error of #acr("FPS")/2. In our case \~15ms). This allowed to record monocular and stereo video both at the same time, as the timestamps recorded could allow us to test the precision of the timing system after the race.
 
 Once the stereo videos have been harvested, some tests have been led to assert the capabilities of the different solutions.
 
@@ -314,7 +318,7 @@ Once the stereo videos have been harvested, some tests have been led to assert t
   
 ) <fig_foundation_stereo>
 
-The results gathered from FoundationStereo have not been compelling, as they are worse that they should be, as shown in @fig_foundation_stereo. My analysis is that the baseline (distance between where the right and left images are taken) that I choose to record the data was way bigger than the baseline used to train this model. Or the calibration and rectification done on both the videos was not precise enough.
+The results gathered from FoundationStereo have not been compelling, as they are worse that they should be, as shown in @fig_foundation_stereo. My analysis is that the baseline (distance between where the right and left images are taken) that I choose to record the data was way bigger than the baseline used to train this model. Or the calibration and rectification done on both the videos was not precise enough, even with the metrics generated by OpenCV #footnote(link("htts://wwww.opencv.org"))
 
 === Monocular depth estimation <mono_depth_estimation>
 
@@ -373,7 +377,7 @@ To choose the right version of the DepthAnythingV2 model, and the right picture 
   caption: [DepthAnythingV2 model performance benchmark]
 ) <fig_depth_performance>
 
-The @fig_depth_performance shows the results of the benchmark. This benchmark was performed on a Lenovo Legion Y540-IRH15#footnote(link("https://psref.lenovo.com/syspool/Sys/PDF/Legion/Lenovo_Legion_Y540_15IRH/Lenovo_Legion_Y540_15IRH_Spec.PDF")) laptop. This laptop is equipped with an Intel i5 9300H #footnote(link("https://www.intel.fr/content/www/fr/fr/products/sku/191075/intel-core-i59300h-processor-8m-cache-up-to-4-10-ghz/specifications.html")) CPU and a Nvidia 1660Ti Mobile GPU #footnote[(link("https://www.nvidia.com/en-eu/geforce/gaming-laptops/gtx-1660-ti/"))].
+The @fig_depth_performance shows the results of the benchmark. This benchmark was performed on a Lenovo Legion Y540-15IRH#footnote(link("https://psref.lenovo.com/syspool/Sys/PDF/Legion/Lenovo_Legion_Y540_15IRH/Lenovo_Legion_Y540_15IRH_Spec.PDF")) laptop. This laptop is equipped with an Intel i5 9300H #footnote(link("https://www.intel.fr/content/www/fr/fr/products/sku/191075/intel-core-i59300h-processor-8m-cache-up-to-4-10-ghz/specifications.html")) CPU and a Nvidia 1660Ti Mobile GPU #footnote(link("https://www.nvidia.com/en-eu/geforce/gaming-laptops/gtx-1660-ti/")).
 
 #align(center)[
 #grid(
@@ -439,7 +443,7 @@ The @fig_arrival_line_block depicts the input and outputs of the block. As input
 
 This system is not very complicated, as we can take a point for each contestant (with the most replicability possible), and compare its depth with a point on the same X coordinate of the arrival line.
 
-The point is positioned in the middle of the person detection box, this correspond to the hips/lower torso of a person. But this point can be moved, or even duplicated. But in the tests conducted, the performance hit of running a full pose estimation model in order to have precise body point for each people does not translate to a big difference in precision.
+The point is positioned in the middle of the person detection box, this correspond to the hips/lower torso of a person. But this point can be moved, or even duplicated. But in the tests conducted, the performance hit of running a full pose estimation model in order to have precise body point for each people does not translate to a big enough difference in precision to be used.
 
 #figure(
   image("figs/depth/depth_arrival_line.png"),
@@ -500,7 +504,7 @@ As shown in @bib_read_benchmark, the two OCR engines are good, but they are some
  caption: [OCR result comparison]
 ) <bib_reading_results>
 
-The @bib_reading_results shows some example of the dataset and the corresponding result from the two different OCR engine. We can see from the two firsts examples that PaddleOCR #cite(<paddleocr2020>) is more tolerant to blur. But in the third row, we can see that PaddleOCR #cite(<paddleocr2020>) gives no results back, whereas EasyOCR #cite(<easyocr2020>) succeed in reading the correct number. But the fourth example is why PaddleOCR #cite(<paddleocr2020>) will be better for our task. As both OCR gives a result back with high confidence, but EasyOCR #cite(<easyocr2020>) give a wrong result back. The task is not easy, as the lighting conditions make the number appear as 2186. But for this task, we want the highest precision possible, event if we cannot read the number on some frames. As a human revision would be possible, it is better to not have any number read than a wrong number.
+The @bib_reading_results shows some example of the dataset and the corresponding result from the two different OCR engine. We can see from the two firsts examples that PaddleOCR is more tolerant to blur. But in the third row, we can see that PaddleOCR gives no results back, whereas EasyOCR succeed in reading the correct number. But the fourth example is why PaddleOCR will be better for our task. As both OCR gives a result back with high confidence, but EasyOCR give a wrong result back. The task is not easy, as the lighting conditions make the number appear as 2186. But for this task, we want the highest precision possible, event if we cannot read the number on some frames. As a human revision would be possible, it is better to not have any number read than a wrong number.
 
 
 == Result construction
@@ -710,7 +714,7 @@ As depicted in the @fig_58_computed_time and the @fig_58_real_time, the camera s
   caption: [The detailed results of the contestant 58]
 ) <fig_manual_time_correction>
 
-After asking SP Timing, they confirmed that the participant started at the wrong time, and got his time corrected manually afterward, as shown by @fig_manual_time_correction. In the red rectangle, we can see that the automatic device recorded the same finish time as the camera system, but a manual override happened after. And in the bottom of @fig_manual_time_correction, we can see that the runner started the race 15 minutes early. As they were multiples starts, this is an easy mistake to make. This situation shows that the camera system worked correctly for this participant.
+After asking SP Timing, they confirmed that the participant started at the wrong time, and got his time manually corrected afterward, as shown by @fig_manual_time_correction. In the red rectangle, we can see that the automatic device recorded the same finish time as the camera system, but a manual override happened after. And in the bottom of @fig_manual_time_correction, we can see that the runner started the race 15 minutes early. As they were multiples starts, this is an easy mistake to make. This situation shows that the camera system worked correctly for this participant.
 
 *Case 2*
 
@@ -910,7 +914,7 @@ The @fig_hist_diff depicts, as expected, a Gauss curve. But as we can see, it is
     )
 ]
 
-The @fig_depth_precision_automatic depict the frames on which the depth estimation saw the participant cross the finish line. The @fig_depth_precision_manual. There is a difference of two frames between the two. As we can see, the system triggers a little early relative to the human label, but the difference is very small to the eye.
+The @fig_depth_precision_automatic depict the frames on which the depth estimation saw the participant cross the finish line. The @fig_depth_precision_manual. There is a difference of two frames between the two. As we can see, the system triggers a little early relative to the human label, but the difference is very small to the eye. This confirms that the system is precise enough for our use cases.
 
 = Discussion
 
@@ -920,19 +924,19 @@ This chapter will discuss in detail the limitation of the system, its weaknesses
 
 For now, the bib detection is tuned to have the highest recall possible, without much care for the accuracy. This means that false positive are common. This is not a problem in our case as the probability that a false positive occurs, in a person box, with a valid bib number on it is very low (if not zero). But as we allow for only one bib detection at a time in a person box, some false positive are effectively "hiding" the true positive. 
 
-To upgrade this part, some better labeled data would be needed. One could either complete and verify the open datasets used for training. Or create one from scratch
+To upgrade this part, some better labeled data would be needed. One could either complete and verify the open datasets used for training, or create one from scratch. This would regulate the false positive detections, and even upgrade the stability of the system, as for now, some bibs are diseappearing between frames.
 
 // Need to talk about the limits of the bib detection system -> only trained on standard rectangular bibs. Lack of good data 
 
 == Bib reading <bib_reading_improvements>
 
-The biggest improvement this part would benefit from would be to fix all the bib number to a precise length, for example 4 digits. As wrong read are very rare, partial ones pretty common, this would ensure the system detects every partial read, and let a human reviewer intervene and write manually the bib number.
+The biggest improvement this part would benefit from would be to fix all the bib number to a precise length, for example 4 digits. Even if wrong reads are very rare, partial ones are pretty common, this would ensure the system detects and identify every partial read, and let a human reviewer intervene and write manually the bib number.
 
-A new bib reconstruction system could even be created, as by fixing the length of the bib numbers, some more complex reconstruction is possible (without increasing the number of false positives). Something based on the Bayesian inference #footnote(link("https://en.wikipedia.org/wiki/Bayesian_inference"))
+A new bib reconstruction system could even be created, as by fixing the length of the bib numbers, some more complex reconstruction is possible (without increasing the number of false positives). Something based on the Bayesian inference #footnote(link("https://en.wikipedia.org/wiki/Bayesian_inference")) could work and upgrade the results of the system.
 
 == Timing precision
 
-The current timing solution (monocular depth estimation) is very dependant on the situation. This means that for a good camera and arrival line position,the results are what is described in @timing_precision, but, according to my tests, the standard deviation can go up to about 250ms in the worst cases (arrival line too close to camera, person right in front of the cameras). This imply that the camera position and point of view is very important, as a bad situation will decrease the precision of the timing even when no occlusion is happening.
+The current timing solution (monocular depth estimation) is very dependant on the situation. This means that for a good camera and arrival line position,the results are what is described in @timing_precision, but, according to my tests, the standard deviation can go up to about 250ms in the worst cases (arrival line too close to camera, person right in front of the cameras). This imply that the camera position and point of view is very important, as a bad situation will decrease the precision of the timing even when no occlusion is happening. This could be avoided by using stereo depth estimation, which may be a little heavier performance wise, but is more stable and less dependant in the situation, as long as there is enough texture to the surfaces (which is not a problem in outdoor scenarios).
 
 
 == Performances and optimizations <perf_and_opti>
@@ -941,7 +945,7 @@ For now, the entire systems run at an average of 15 #acr("FPS") on a Intel i5-93
 
 The first step to optimize this solution, would be to merge the two #acr("YOLO") models into a single one. This has not been done for now as this would need a dataset containing both person and bib number labeled. This dataset does not exists for now. This merges with the point of @bib_detection_improvements, which is to create a good quality dataset containing labels for both person and bib classes.
 
-The second (more demanding) step would be to dig into the implementation of the YOLO model, to allow for sending a single time the frame to analyze to the GPU memory, and doing a single time the preprocessing (if applicable). As for now, the systems sends three copy of each frame to the GPU.
+The second (more demanding) step would be to dig into the implementation of the YOLO model and the DepthAnythingV2 implementation, to allow for sending a single time the frame to analyze to the GPU memory, and doing a single time the preprocessing (if applicable). As for now, the systems sends three copy of each frame to the GPU.
 
 == Frame-rate impact <framerate_impact>
 
@@ -962,7 +966,7 @@ The @result_15fps_filtered shows the results of the comparison between a recordi
 
 As expected, we can see that the drop in temporal resolution translate to a drop in the number of bib read and time recorded. Some parameters of the system could be optimized to work best at 15 FPS (number of frame recorded before line, slope of the depth evolution etc...). But this comparison gives a good idea of the impact of this change.
 
-This shows us a great strength of our current system, the bib reading system has a great accuracy, as even with less frame, we see a drop in recall, but none in accuracy.
+This shows us a great strength of our current system, the bib reading system has a great accuracy, as even with less frame, we see a drop in recall, but none in accuracy. Which ensure that the system does not fail silently, and allow for a human intervention to fix the issue.
 
 
 
@@ -982,11 +986,15 @@ The third solution would imply a greater effort, it would be to add another poin
 
 The system, as of now, works as expected or better. As there is some cases where it exceed expectations, and others where it could do better. But even with all those flaws, it has succeed in, from 269 runners, have only 2 critical failure where no data could be registered for the runners. This is a success as even for cases where the bib number could not be read, or the precise timing not be deducted, a human intervention is still possible.
 
+With the timing precision going under 50ms of standard deviation, we are exceeding the expectations. This shows that for now, the monocular depth estimation is sufficient, even if an upgrade might give us a better stability.
+
 As the system is designed in blocks, changing the inner working of some parts (for example switching the monocular depth estimation for a stereo system) would not have any impact outside of this module. This allows for independent upgrade going along with the technology (as some solutions used are at the center of many research).
 
 This solution is almost good enough to be used commercially, but it still needs some work in some area to be viable. In particular the bib detection and reading could be improved, as for many cases with partial occlusion, a human can, by looking at the video, reconstruct the full bib number. But for now, the system cannot reconstruct it if a number is partially obstructed during all the frames.
 
 Performance-wise, the system is currently usable, but it could be better if some data with person and bib labeled would be found or created. This would allow to merge the two detection models into a single one, reducing performance overhead.
+
+For the ease of use and deployement, the system is a simple as it can be. As any camera with any laptop with a GPU can run the solution (one could even split the video gathering and the computing to allow for mutiple points of view to be recorded at the same time).
 
 == Future work <future_work>
 
@@ -1021,10 +1029,5 @@ As a last resort, a multi camera system could be envisaged, with two different p
 
 // Table of listings  
 #table-of-figures()
-
-// Code inclusion
-#pagebreak()
-#code-samples()
-
 
 // This is the end, folks!

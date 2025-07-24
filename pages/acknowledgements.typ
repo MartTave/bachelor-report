@@ -9,4 +9,4 @@ Sebastien, who was here every day at the HES, I hope I were as motivating as you
 
 My family, who supported my studies from the start, encouraged me to give the best of myself, and helped me in many ways during the long years of my studies.
 
-And lastly Marta, who is a model I try to reach in motivation, courage and dedication.
+And lastly Marta, who, apart from being a model I try to reach in motivation, courage and dedication, was a breath of fresh air between the working sessions.
