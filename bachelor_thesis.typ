@@ -159,7 +159,7 @@ The solutions that were considered were :
 - Efficient DETR #cite(<lv2023detrs>)
 - RT-DETR #cite(<lv2024rtdetrv2improvedbaselinebagoffreebies>)
 
-The final choice was made to use the Ultralytics YOLO #cite(<yolo11_ultralytics>) implementation for multiples reasons. First, the inference implementation is very easy, only a few lines of code are needed. There is many models available (YOLOv5 to YOLOv11) with multiples model sizes (nano, small, base, large, extra-large) for varying tradeoffs between performance and accuracy. Lastly, the inference performance of the #acr("YOLO") models are the best available for now, so it fits perfectly for our task. For the choice of the resolution at which to operate the model, as it is pre-trained with a 640x640 resolution, it is the one used for this project. Another one could be use, either to strech out performances even more, but as this part of the solution is not the heaviest, the befinits vs costs of training this model to another resolution is out of scope for this Bachelor thesis.
+The final choice was made to use the Ultralytics YOLO #cite(<yolo11_ultralytics>) implementation for multiples reasons. First, the inference implementation is very easy, only a few lines of code are needed. There is many models available (YOLOv5 to YOLOv11) with multiples model sizes (nano, small, base, large, extra-large) for varying tradeoffs between performance and accuracy. Lastly, the inference performance of the #acr("YOLO") models are the best available for now, so it fits perfectly for our task. For the choice of the resolution at which to operate the model, as it is pre-trained with a 640x640 resolution, it is the one used for this project. Another one could be use, either to stretch out performances even more, but as this part of the solution is not the heaviest, the benefits vs costs of training this model to another resolution is out of scope for this Bachelor thesis.
 
 == Tracking
 
@@ -219,7 +219,7 @@ But even the quality of the third dataset is not perfect, as when there is occlu
 
 === Training
 
-With the technology stack made available by the Ultralytics YOLO implementation  #footnote[https://docs.ultralytics.com/modes/train/]. The training was done quickly and easily. This model was trained using pictures resized to 640x640. This choice was made to facilitate the merge of the two models for a later use, as decribed in @future_work
+With the technology stack made available by the Ultralytics YOLO implementation  #footnote[https://docs.ultralytics.com/modes/train/]. The training was done quickly and easily. This model was trained using pictures resized to 640x640. This choice was made to facilitate the merge of the two models for a later use, as described in @future_work
 
 #figure(
   image("figs/yolo_train.png", height: 8cm),
@@ -230,7 +230,7 @@ As shown by the @fig_yolo_train, the training was completed without any issue, b
 
 === Results
 
-The result are as expected after analysis of the datasets, mittigated.
+The result are as expected after analysis of the datasets, mitigated.
 #align(center)[
 #grid(
   columns: 2,
@@ -927,7 +927,7 @@ To upgrade this part, some better labeled data would be needed. One could either
 
 == Bib reading <bib_reading_improvements>
 
-The biggest improvement this part would benifit from would be to fix all the bib number to a precise length, for example 4 digits. As wrong read are very rare, partial ones pretty common, this would ensure the system detects every partial read, and let a human reviewer intervene and write manually the bib number.
+The biggest improvement this part would benefit from would be to fix all the bib number to a precise length, for example 4 digits. As wrong read are very rare, partial ones pretty common, this would ensure the system detects every partial read, and let a human reviewer intervene and write manually the bib number.
 
 A new bib reconstruction system could even be created, as by fixing the length of the bib numbers, some more complex reconstruction is possible (without increasing the number of false positives). Something based on the Bayesian inference #footnote(link("https://en.wikipedia.org/wiki/Bayesian_inference"))
 
