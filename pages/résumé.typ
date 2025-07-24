@@ -1,4 +1,4 @@
-#import "@preview/isc-hei-bthesis:0.5.0" : *
+#import "@preview/isc-hei-bthesis:0.5.3" : *
 
 #heavy-title("Résumé")
 
@@ -13,4 +13,4 @@ Le système final a été utilisé pour chronométrer 269 coureurs lors du trail
 
 #v(1fr)
 
-*Keywords* : #context inc.global-keywords.get().join(", ")
+#abstract-footer("fr")

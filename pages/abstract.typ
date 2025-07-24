@@ -1,4 +1,4 @@
-#import "@preview/isc-hei-bthesis:0.5.0" : *
+#import "@preview/isc-hei-bthesis:0.5.3" : *
 
 #heavy-title("Abstract")
 
@@ -14,4 +14,4 @@ The final system was used to time 269 runners at the Trail du Gramont held on 14
 
 #v(1fr)
 
-*Keywords* : #context inc.global-keywords.get().join(", ")
+#abstract-footer("en")
