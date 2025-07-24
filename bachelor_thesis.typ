@@ -3,7 +3,8 @@
 #let doc_language = "en" // Valid values are en, fr
 
 #show: project.with( 
-  title: "VRRT - Video-based Realtime Race Timing", 
+  title: "VRRT
+Video-based Realtime Race Timing", 
   sub-title: "A Bachelor Thesis in Data Engineering", // Optional
 
   is-thesis: true,   
@@ -138,8 +139,6 @@ With all those blocks, every functionalities required to fulfill the requirement
 == Person detection and tracking
 
 The goal of this block is to detect persons present on a image, give each of the detection a unique #acr("ID"), track their position across multiple frames, and if possible, re-identify them after occlusion. This will allow the system to track every person in front of the camera, and associate data gathered by other blocks to the #acr("ID") generated.
-
-#linebreak()
 
 #figure(
   image("figs/block_diagram/person_detection.png", height: 3cm),
@@ -524,7 +523,7 @@ It is in this block that the number reconstruction processing is done, as it is 
 The complete system works as follows. 
 
 At first, the picture is processed in parallel by : 
-- A YOLOv11 model (pre-trained on the COCO dataset) #todo[cite coco dataset !!!]
+- A YOLOv11 model (pre-trained on the COCO dataset#cite(<coco>))
 - A YOLOv11 model fine-tuned on a bib detection dataset
 - A DepthAnythingV2 Small model
 
